@@ -5,6 +5,7 @@ import PostTag from '@/components/posts/PostTag'
 import './PostPagesAll.scss'
 import { useNavigate, useParams } from 'react-router-dom'
 import PostHeader from '@/components/posts/PostHeader'
+
 const PostDetail = () => {
 
   const { id } = useParams()
@@ -74,9 +75,9 @@ const PostDetail = () => {
               </p>
 
               <div className="tags">
-                <PostTag tag="tag1" />
-                <PostTag tag="tag2" />
-                <PostTag tag="tag3" />
+                {(post.tags || []).map((tag, i)=>(
+                  <PostTag tag={tag} key={i}/>
+                ))}
               </div>
             </div>
             <div className="img-wrap">
