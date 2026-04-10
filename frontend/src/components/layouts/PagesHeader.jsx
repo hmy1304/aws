@@ -8,6 +8,7 @@ const PagesHeader = ({
     onClick,
     buttonClass = '',
     showButton = true,
+    backico = ''
 }) => {
   return (
     <header className='pages-header'>
@@ -18,7 +19,7 @@ const PagesHeader = ({
           text={buttonText}
           className={buttonClass}
           onClick={onClick}
-          
+          backico={backico}
         />
       )}
     </header>

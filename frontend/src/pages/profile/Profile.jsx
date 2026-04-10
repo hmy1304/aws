@@ -21,6 +21,7 @@ const Profile = () => {
         buttonText='뒤로가기'
         showButton
         buttonClass="Back bl"
+        backico="bh"
         onClick={handleGoBack}
         />
         <main>

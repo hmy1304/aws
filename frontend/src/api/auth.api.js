@@ -59,18 +59,21 @@ export const getMe =async()=>{
     return data
 }
 
-export const updateMe =async(payload)=>{
-        const response = await fetch(`${BASE_URL}/auth/me`,{
-        method:'PATCH',
-        credentials:'include',
+export const updateMe = async (payload) => {
+    const response = await fetch(`${BASE_URL}/auth/me`, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        credentials: 'include',
         body: JSON.stringify(payload)
 
     })
 
-    const data = await response.json().catch(()=>null)
+    const data = await response.json().catch(() => null)
 
 
-    if(!response.ok){
+    if (!response.ok) {
         throw new Error(data?.message || '회원 정보 수정하기 실패')
     }
 
