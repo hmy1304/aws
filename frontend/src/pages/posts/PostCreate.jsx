@@ -8,8 +8,7 @@ import { CATEGORY_OPTIONS } from '@/constants/category'
 import PostTag from '@/components/posts/PostTag'
 import { createPost } from '@/api/post.api'
 import { uploadImage } from '@/api/file.api'
-import {createTag, deleteTag, getMyTags} from '@/api/tag.api'
-
+import { createTag,deleteTag, getMyTags } from '@/api/tag.api'
 const PostCreate = () => {
 
 
@@ -25,16 +24,17 @@ const PostCreate = () => {
   const [isSaving, setIsSaving] = useState(false)
   const [imageUrl, setImageUrl] = useState(null)
 
-  const loadMyTags = async() => {
+  const loadMyTags = async()=>{
     const res = await getMyTags()
     const list = Array.isArray(res)? res :res?.data?? []
-    
+
     setTags(
       list.map((t)=>({
         id:t.id,
-        label:typeof t ==='string'? t: t.label?? tname
+        label:typeof t ==='string'? t: t.label?? t.name
       }))
     )
+
 
     // console.log(res)
   }
@@ -45,23 +45,22 @@ const PostCreate = () => {
     })
   },[])
 
-  const handleAddTag = async() => {
+  const handleAddTag =async()=>{
     const next = tagInput.trim()
 
     if(!next) return
 
-    if(tags.some((t)=>t.label == next)) {
+    if(tags.some((t)=>t.label ==next)){
       setTagInput('')
       return
     }
-
     try {
       setIsAddingTag(true)
 
       const created = await createTag(next)
 
       setTags((prev)=>{
-        if(prev.some((t)=>t.id===created.id || t.label===created.label)) {
+        if(prev.some((t)=>t.id===created.id || t.label ===created.label)){
           return prev
         }
         return [...prev,{
@@ -69,30 +68,28 @@ const PostCreate = () => {
           label:created.label
         }]
       })
-
       setTagInput('')
     } catch (error) {
       console.error(error)
       const message = error?.response?.data?.message || '태그 추가 실패'
       alert(message)
-    } finally {
+    }finally{
       setIsAddingTag(false)
     }
-  }
 
-  const handleKenEnter = async(e) => {
-    if(e.key==='Enter') {
+  }
+  const handleKenEnter =(e)=>{
+    if(e.key==='Enter'){
       e.preventDefault()
       handleAddTag()
     }
   }
-
-  const handleRemoveTag = async(tag) => {
+  const handleRemoveTag = async(tag)=>{
     try {
       await deleteTag(tag.id)
       setTags((prev)=>prev.filter((t)=>t.id!==tag.id))
     } catch (error) {
-      console.error(error)
+       console.error(error)
       const message = error?.response?.data?.message || '태그 삭제 실패'
       alert(message)
     }
@@ -188,23 +185,22 @@ const PostCreate = () => {
             <div className="post-tag-box">
 
               <div className="tags">
-                {tags.map((t)=>(
-                  <PostTag 
-                  onClick={()=>handleRemoveTag(t)}
-                  tag={t.label} 
-                  key={t.id}/>
-                ))}
-                <input 
+                  {tags.map((t)=>(
+                    <PostTag 
+                    tag={t.label} 
+                    onClick={()=>handleRemoveTag(t)}
+                    key={t.id}/>
+
+                  ))}
+                <input
                 value={tagInput}
                 onKeyDown={handleKenEnter}
                 onChange={(e)=>setTagInput(e.target.value)}
-                type="text" 
-                className='post-tag-input' 
-                placeholder='tag를 자유롭게 입력하세요' />
+                type="text" className='post-tag-input' placeholder='tag를 자유롭게 입력하세요' />
                 <Button 
                 type="button" 
-                text="+ 태그 추가"
-                onClick={handleAddTag} 
+                text="+ 태그 추가" 
+                onClick={handleAddTag}
                 className="post-tag-add" />
               </div>
             </div>

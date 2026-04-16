@@ -18,16 +18,16 @@ public record PostResponse(
         LocalDateTime createdAt
 ) {
 
-    public static PostResponse from(Post post){
-        return  new PostResponse(
+    public static PostResponse from(Post post) {
+        return new PostResponse(
                 post.getId(),
                 post.getCategory(),
                 post.getTitle(),
                 post.getContent(),
                 post.getImageUrl(),
                 post.getTags().stream()
-                                .map(tag ->tag.getLabel())
-                                        .toList(),
+                        .map(tag -> tag.getLabel())
+                        .toList(),
                 post.getMember().getId(),
                 post.getMember().getName(),
                 post.getCreatedAt()

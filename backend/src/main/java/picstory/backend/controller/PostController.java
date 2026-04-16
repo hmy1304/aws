@@ -48,7 +48,7 @@ public class PostController {
             @PathVariable Long id,
             @RequestBody UpdatePostTagsRequest request,
             HttpSession session
-            ) {
+            ){
         return postService.updateTags(id, request, session);
     }
 

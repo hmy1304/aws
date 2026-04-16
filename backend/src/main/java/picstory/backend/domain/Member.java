@@ -70,8 +70,8 @@ public class Member {
         this.status=status;
     }
 
-    public void updateProfile(String name, String phone) {
+    public void updateProfile(String name, String phone){
         this.name = name;
-        this.phone = phone;
+        this.phone=phone;
     }
 }

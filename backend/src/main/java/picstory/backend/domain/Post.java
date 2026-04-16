@@ -52,7 +52,7 @@ public class Post {
     )
     private Set<Tag> tags = new HashSet<>();
 
-    public Post(PostCategory category, String title, String content, String imageUrl,Member member) {
+    public Post(PostCategory category, String title, String content, String imageUrl, Member member) {
         this.category = category;
         this.title = title;
         this.content = content;
@@ -70,9 +70,9 @@ public class Post {
         this.updatedAt = LocalDateTime.now();
     }
 
-    public void updateTags(Set<Tag> tags) {
+    public void  updateTags(Set<Tag> tags){
         this.tags.clear();
-        if(tags!=null) {
+        if(tags!=null){
             this.tags.addAll(tags);
         }
         this.updatedAt=LocalDateTime.now();

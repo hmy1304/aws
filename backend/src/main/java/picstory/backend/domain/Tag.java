@@ -16,7 +16,7 @@ import java.util.Set;
         name = "tags",
         uniqueConstraints = @UniqueConstraint(
                 name = "uk_member_tag_label",
-                columnNames = {"member_id", "label"}
+                columnNames = {"member_id","label"}
         )
 )
 public class Tag {
@@ -24,11 +24,12 @@ public class Tag {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "member_id", nullable = false)
+
+    @ManyToOne(fetch = FetchType.LAZY,optional = false)
+    @JoinColumn(name = "member_id",nullable = false)
     private Member member;
 
-    @Column(nullable = false, length = 50)
+    @Column(nullable = false,length = 50)
     private String label;
 
     @ManyToMany(mappedBy = "tags")
@@ -38,20 +39,20 @@ public class Tag {
     private LocalDateTime createdAt;
 
     @Column(nullable = false)
-    private LocalDateTime updatedAT;
+    private LocalDateTime updatedAt;
 
     @PrePersist
-    public void onCreate() {
+    public void onCreate(){
         this.createdAt = LocalDateTime.now();
-        this.updatedAT = this.createdAt;
+        this.updatedAt=this.createdAt;
     }
     @PreUpdate
-    public void onUpdate() {
-        this.updatedAT = LocalDateTime.now();
+    public void onUpdate(){
+        this.updatedAt=LocalDateTime.now();
     }
 
-    public Tag(Member member, String label) {
-        this.member = member;
-        this.label = label;
+    public Tag(Member member,String label){
+        this.member= member;
+        this.label=label;
     }
 }

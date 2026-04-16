@@ -1,3 +1,4 @@
+
 export const MEMBER_STATUS_LABEL = {
   ACTIVE: '활성',
   SUSPENDED: '정지',

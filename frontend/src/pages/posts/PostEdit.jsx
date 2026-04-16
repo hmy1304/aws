@@ -8,8 +8,7 @@ import { CATEGORY_OPTIONS } from '@/constants/category'
 import PostTag from '@/components/posts/PostTag'
 import { getPostById, updatePost } from '@/api/post.api'
 import { uploadImage } from '@/api/file.api'
-import {createTag, deleteTag, getMyTags} from '@/api/tag.api'
-
+import { createTag, deleteTag, getMyTags } from '@/api/tag.api'
 const PostEdit = () => {
   const { id } = useParams()
   const navigate = useNavigate()
@@ -31,19 +30,18 @@ const PostEdit = () => {
     navigate(-1)
   }
 
-  const loadMyTags = async() => {
-      const res = await getMyTags()
-      const list = Array.isArray(res)? res :res?.data?? []
-      
-      setTags(
-        list.map((t)=>({
-          id:t.id,
-          label:typeof t ==='string'? t: t.label?? tname
-        }))
-      )
-  
-      // console.log(res)
-    }
+
+  const loadMyTags = async () => {
+    const res = await getMyTags()
+    const list = Array.isArray(res) ? res : res?.data ?? []
+
+    setTags(
+      list.map((t) => ({
+        id: t.id,
+        label: typeof t === 'string' ? t : t.label ?? t.name
+      }))
+    )
+  }
 
   const loadPostDetail = async () => {
     try {
@@ -61,11 +59,12 @@ const PostEdit = () => {
       const postTags = Array.isArray(post?.tags) ? post.tags : []
 
       setTags(
-        postTags.map((t, index)=>({
-          id:t.id?? `${t.label ?? t.name ?? t}-${index}`,
-          label:typeof t === 'string'? t: t.label ?? t.name
+        postTags.map((t, index) => ({
+          id: t.id ?? `${t.label ?? t.name ?? t}-${index}`,
+          label: typeof t === 'string' ? t : t.label ?? t.name
         }))
       )
+
 
     } catch (error) {
       console.error('게시글을 불러오지 못했습니다.', error)
@@ -80,63 +79,62 @@ const PostEdit = () => {
 
   }, [id])
 
-  const handleAddTag = async() => {
-      const next = tagInput.trim()
-  
-      if(!next) return
-  
-      if(tags.some((t)=>t.label == next)) {
-        setTagInput('')
-        return
-      }
-  
-      try {
-        setIsAddingTag(true)
-  
-        const created = await createTag(next)
-        const newTag = created?.data ?? created
-  
-        setTags((prev)=>{
-          if(prev.some(
-            (t)=>t.id===newTag.id || t.label===newTag.label || t.label === next)) {
-            return prev
-          }
-          return [...prev,{
-            id:newTag.id ?? next,
-            label:newTag.label ?? next
-          }]
-        })
-  
-        setTagInput('')
-      } catch (error) {
-        console.error(error)
-        const message = error?.response?.data?.message || '태그 추가 실패'
-        alert(message)
-      } finally {
-        setIsAddingTag(false)
-      }
-  }
+  const handleAddTag = async () => {
+    const next = tagInput.trim()
 
-  const handleRemoveTag = async(tag) => {
-      try {
-        if(tag?.id && typeof tag.id !=='string') {
-          await deleteTag(tag.id)
+    if (!next) return
+
+    if (tags.some((t) => t.label == next)) {
+      setTagInput('')
+      return
+    }
+    try {
+      setIsAddingTag(true)
+
+      const created = await createTag(next)
+      const newTag = created?.data ?? created
+
+      setTags((prev) => {
+        if (
+          prev.some(
+            (t) => t.id === newTag.id || t.label === newTag.label || t.label === next)) {
+          return prev
         }
-        setTags((prev)=>prev.filter((t)=>t.id!==tag.id))
-      } catch (error) {
-        console.error(error)
-        const message = error?.response?.data?.message || '태그 삭제 실패'
-        alert(message)
-      }
+        return [...prev, {
+          id: newTag.id ?? next,
+          label: newTag.label ?? next
+        }]
+      })
+      setTagInput('')
+    } catch (error) {
+      console.error(error)
+      const message = error?.response?.data?.message || '태그 추가 실패'
+      alert(message)
+    } finally {
+      setIsAddingTag(false)
+    }
+
   }
 
-  const handleKenEnter = async(e) => {
-    if(e.key==='Enter') {
+  const handleRemoveTag = async (tag) => {
+    try {
+      if (tag?.id && typeof tag.id !== 'string') {
+        await deleteTag(tag.id)
+      }
+      setTags((prev) => prev.filter((t) => t.id !== tag.id))
+    } catch (error) {
+      console.error(error)
+      const message = error?.response?.data?.message || '태그 삭제 실패'
+      alert(message)
+    }
+  }
+
+  const handleKenEnter = (e) => {
+    if (e.key === 'Enter') {
       e.preventDefault()
       handleAddTag()
     }
   }
-
   const handleUploadImage = async (e) => {
     const file = e.target.files?.[0]
 
@@ -196,11 +194,11 @@ const PostEdit = () => {
     }
   }
 
-  if(isLoading) {
+  if(isLoading){
     return(
       <section className='page post-section post-edit'>
         <div className="inner">
-          불러오는 중...
+          불러오는 중....
         </div>
       </section>
     )
@@ -238,7 +236,8 @@ const PostEdit = () => {
 
               <div className="tags">
                 {tags.map((t)=>(
-                  <PostTag tag={t.label} key={t.id} onClick={()=>handleRemoveTag(t)}/>
+                  <PostTag tag={t.label} key={t.id} onClick={()=>handleRemoveTag(t)}  />
+
                 ))}
                 <input 
                 type="text" 
@@ -246,14 +245,12 @@ const PostEdit = () => {
                 onKeyDown={handleKenEnter}
                 onChange={(e)=>setTagInput(e.target.value)}
                 className='post-tag-input' 
-                placeholder='tag를 자유롭게 입력하세요' 
-                />
+                placeholder='tag를 자유롭게 입력하세요' />
                 <Button 
-                type="button"
-                onClick={handleAddTag} 
+                type="button" 
+                onClick={handleAddTag}
                 text="+ 태그 추가" 
-                className="post-tag-add" 
-                />
+                className="post-tag-add" />
               </div>
             </div>
             <div className="post-field">

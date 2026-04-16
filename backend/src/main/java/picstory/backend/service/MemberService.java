@@ -68,25 +68,39 @@ public class MemberService {
         member.changeStatus(MemberStatus.DELETED);
     }
 
-    public MemberResponse updateProfile(Long memberId, UpdateProfileRequest request) {
-        if(request.name() == null || request.name().isBlank()){
-            throw new IllegalArgumentException("이름을 입력해 주세요.");
-        }
 
+    public MemberResponse updateProfile(Long memberId, UpdateProfileRequest request){
+        if(request.name()==null|| request.name().isBlank()){
+            throw new IllegalArgumentException("이름을 입력해 주세요");
+        }
         Member member = findById(memberId);
-        String trimedName = request.name().trim();
+        String trimmedName = request.name().trim();
         String newPhone = request.phone()==null || request.phone().isBlank()?
                 null
                 : request.phone().trim();
 
-        if(newPhone != null
-            && !newPhone.equals(member.getPhone())
+        if (newPhone != null
+                && !newPhone.equals(member.getPhone())
                 && memberRepository.existsByPhoneAndIdNot(newPhone, memberId)
         ) {
-            throw new IllegalArgumentException("이미 사용중인 전화번호입니다.");
+            throw new IllegalArgumentException("이미 사용중인 전화번호 입니다.");
         }
-        member.updateProfile(trimedName, newPhone);
+        member.updateProfile(trimmedName, newPhone);
         return MemberResponse.from(member);
+
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 }

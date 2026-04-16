@@ -16,7 +16,7 @@ const Button = ({
 
   return (
     <button
-      type={type}
+    type={type}
       onClick={onClick}
       disabled={disabled}
       className={`btn ${className}`}>

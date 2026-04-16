@@ -5,24 +5,23 @@ import Button from '@/components/ui/Button'
 import ProfileBase from '@/components/profile/ProfileBase'
 import ProfileName from '@/components/profile/ProfileName'
 import ProfileSummary from '@/components/profile/ProfileSummary'
-import PagesHeader from '@/components/layouts/PagesHeader'
-
+import PagesHeader from '../../components/layouts/PagesHeader'
 const Profile = () => {
+
   const navigate = useNavigate()
-  const handleGoBack = () => {
+  const handleGoBack = ()=>{
     navigate(-1)
   }
-
   return (
     <section className='page profile-section'>
       <div className="inner">
-        <PagesHeader 
-        title='내 프로필'
-        buttonText='뒤로가기'
-        showButton
-        buttonClass="Back bl"
-        backico="bh"
-        onClick={handleGoBack}
+        <PagesHeader
+          title='내 프로필'
+          buttonText='뒤로가기'
+          showButton
+          buttonClass="back wh"
+          backico="bh"
+          onClick={handleGoBack}
         />
         <main>
           <div className="left">
